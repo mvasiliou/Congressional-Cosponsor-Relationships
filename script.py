@@ -1,7 +1,8 @@
 import json
 from pprint import pprint
 import urllib.request
-
+import networkx as nx
+import matplotlib.pyplot as plt
 
 def create_rep_weights():
     rep_dict = {}
@@ -12,8 +13,8 @@ def create_rep_weights():
         num += 1
         print(num)
         get_rep_weight(rep, rep_dict)
-    pprint(rep_dict)    
-    
+    return rep_dict    
+
 def make_url_request(url):
     response = urllib.request.urlopen(url)
     str_response = response.read().decode('utf-8')
@@ -45,7 +46,6 @@ def get_rep_weight(rep, rep_dict):
                 rep_dict[rep]['in_dict'][cosponsor] = 0
             rep_dict[rep]['in_dict'][cosponsor] += 1
 
-
 def find_sponsored_bills(rep):
     url = "https://www.govtrack.us/api/v2/bill?limit=6000&&introduced_date__gt=2015-01-01&&sponsor__exact=" + str(rep)
     data = make_url_request(url)
@@ -55,5 +55,28 @@ def find_sponsored_bills(rep):
         sponsored_bills.append(bill['id'])
     return sponsored_bills
 
+def graph_nodes(rep_dict):
+    graph = nx.MultiDiGraph()
+    for rep in rep_dict:
+        if 'total' in rep_dict[rep]:
+            graph.add_node(rep)
+    return graph
 
-create_rep_weights()
+def graph_edges(rep_dict, graph):
+    for rep in graph.nodes():
+        for sponsor in rep_dict[rep]['in_dict']:
+            num_sponsorships = rep_dict[rep]['in_dict'][sponsor]
+            graph.add_edge(rep, sponsor, weight = num_sponsorships)
+rep_dict = create_rep_weights()
+graph = graph_nodes(rep_dict)
+graph_edges(rep_dict, graph)
+nx.draw(graph)
+nx.write_gexf(graph, 'sponsors_graph.gexf')
+
+
+
+
+
+
+
+
