@@ -8,10 +8,7 @@ def create_rep_weights():
     rep_dict = {}
     get_rep_codes(rep_dict)
     
-    num = 0
     for rep in rep_dict:
-        num += 1
-        print(num)
         get_rep_weight(rep, rep_dict)
     return rep_dict    
 
@@ -28,7 +25,6 @@ def get_rep_codes(rep_dict):
         s_id = senator['person']['id']
         if s_id not in rep_dict:
             rep_dict[s_id] = {}
-
 
 def get_rep_weight(rep, rep_dict):
     rep_dict[rep]['in_dict'] = {}
@@ -67,11 +63,14 @@ def graph_edges(rep_dict, graph):
         for sponsor in rep_dict[rep]['in_dict']:
             num_sponsorships = rep_dict[rep]['in_dict'][sponsor]
             graph.add_edge(rep, sponsor, weight = num_sponsorships)
-rep_dict = create_rep_weights()
-graph = graph_nodes(rep_dict)
-graph_edges(rep_dict, graph)
-nx.draw(graph)
-nx.write_gexf(graph, 'sponsors_graph.gexf')
+
+#rep_dict = create_rep_weights()
+#print(rep_dict)
+
+#graph = graph_nodes(rep_dict)
+#graph_edges(rep_dict, graph)
+#nx.draw(graph)
+#nx.write_gexf(graph, 'sponsors_graph.gexf')
 
 
 
