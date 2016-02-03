@@ -1,6 +1,6 @@
 #Database Set Up Code
 import sqlite3
-from script import make_url_request
+from helper_functions import make_url_request, open_db, commit_db
 
 def create_tables(c):
     c.execute('CREATE TABLE senators(id integer PRIMARY KEY, first text, last text, party text, class text, rank text, state text)')
@@ -30,6 +30,7 @@ def add_sponsored_bills(c):
         data = make_url_request(url)
         for bill in data['objects']:
             bill_id = bill['id']
+            print('Bill Num:', bill_id)
             title = bill['title']
             status = bill['current_status']
             introduced_date = bill['introduced_date']
@@ -46,19 +47,11 @@ def add_cosponsorships(c):
         data = make_url_request(url)
         for person in data['objects']:
             action_id = person['id']
+            print("Cospon Num:", action_id)
             cosponsor = person['person']
             joined_date = person['joined']
             db_args = (action_id, bill, cosponsor, joined_date)
             c.execute('INSERT INTO cosponsorships VALUES(?,?,?,?)', db_args)
-
-def open_db(path):
-    db = sqlite3.connect(path)
-    c = db.cursor()
-    return c, db
-
-def commit_db(db):
-    db.commit()
-    db.close()
 
 if __name__ == '__main__':
     c, db = open_db('GovData')
