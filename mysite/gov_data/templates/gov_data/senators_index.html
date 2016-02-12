@@ -1,0 +1,11 @@
+<h1>Senators List</h1>
+
+{% if senator_list %}
+    <ul>
+    {% for senator in senator_list %}
+        <li><a href = '{{ senator.id }}/'>{{ senator.last }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No Senators to display.</p>
+{% endif %}

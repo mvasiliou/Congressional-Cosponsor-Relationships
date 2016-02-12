@@ -11,13 +11,27 @@ from __future__ import unicode_literals
 
 from django.db import models
 
+class Senator(models.Model):
+    id = models.IntegerField(primary_key=True, blank=True, null=False)  # AutoField?
+    first = models.CharField(blank=True, null=True, max_length= 200)
+    last = models.CharField(blank=True, null=True, max_length = 200)
+    party = models.CharField(blank=True, null=True, max_length = 200)
+    class_field = models.CharField(db_column='class', blank=True, null=True, max_length = 200)  # Field renamed because it was a Python reserved word.
+    rank = models.CharField(blank=True, null=True, max_length = 200)
+    state = models.CharField(blank=True, null=True, max_length = 200)
+
+    def __str__(self):
+        return self.first + ' ' + self.last
+
+    class Meta:
+        db_table = 'senators'
 
 class Bill(models.Model):
     bill_id = models.IntegerField(primary_key=True, blank=True, null=False)
     title = models.TextField(blank=True, null=True)
-    status = models.TextField(blank=True, null=True)
-    introduced_date = models.TextField(blank=True, null=True)
-    sponsor_id = models.IntegerField(blank=True, null=True)
+    status = models.CharField(blank=True, null=True, max_length = 200)
+    introduced_date = models.CharField(blank=True, null=True, max_length = 200)
+    sponsor = models.ForeignKey(Senator, null = True)
 
     def __str__(self):
         return self.title
@@ -25,31 +39,14 @@ class Bill(models.Model):
     class Meta:
         db_table = 'bills'
 
-
 class Cosponsorship(models.Model):
     action_id = models.IntegerField(primary_key=True, blank=True, null=False)
     bill = models.IntegerField(blank=True, null=True)
-    cosponsor = models.IntegerField(blank=True, null=True)
-    joined_date = models.TextField(blank=True, null=True)
+    cosponsor = models.ForeignKey(Senator, null = True)
+    joined_date = models.CharField(blank=True, null=True, max_length = 50)
 
     def __str__(self):
-        return self.bill
+        return str(self.bill)
 
     class Meta:
         db_table = 'cosponsorships'
-
-
-class Senator(models.Model):
-    id = models.IntegerField(primary_key=True, blank=True, null=False)  # AutoField?
-    first = models.TextField(blank=True, null=True)
-    last = models.TextField(blank=True, null=True)
-    party = models.TextField(blank=True, null=True)
-    class_field = models.TextField(db_column='class', blank=True, null=True)  # Field renamed because it was a Python reserved word.
-    rank = models.TextField(blank=True, null=True)
-    state = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return self.first + ' ' + self.last
-
-    class Meta:
-        db_table = 'senators'
