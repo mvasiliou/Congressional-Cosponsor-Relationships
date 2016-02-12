@@ -55,7 +55,6 @@ def add_cosponsorships(c):
 
 if __name__ == '__main__':
     c, db = open_db('GovData')
-    #create_tables(c)
     add_rep_to_db(c)
     add_sponsored_bills(c)
     add_cosponsorships(c)
