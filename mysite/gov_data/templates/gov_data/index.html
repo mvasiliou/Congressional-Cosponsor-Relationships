@@ -1,4 +1,22 @@
-<h1>Check out the Bills or Senators</h1>
-
-<a href = 'bills/'>Bills</a>
-<a href = 'senators/'>Senators</a>
+<!DOCTYPE HTML>
+<html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Home</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'gov_data/style.css' %}" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">   
+    </head>
+    <body>        
+        <div class='container'>
+            <h1>View Categories</h1>
+            <a href = '{% url "bills_index" %}' class='btn btn-primary btn-lg btn-block' role='button'>Bills</a>
+            <a href = '{% url "senators_index" %}' class='btn btn-success btn-lg btn-block' role='button'>Senators</a>                
+        </div>
+        <script src="//d3js.org/d3.v3.min.js"></script>
+        {% load staticfiles %}
+        <script src = '{% static "gov_data/draw_graph.js" %}'></script>
+    </body>

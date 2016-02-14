@@ -1,7 +1,5 @@
-from pprint import pprint
 import networkx as nx
 from networkx.readwrite import json_graph
-import matplotlib.pyplot as plt
 from helper_functions import open_db, commit_db
 import json
 
@@ -58,19 +56,17 @@ def graph_nodes(rep_dict):
 
     for rep in rep_dict:
         name = rep_dict[rep]['name']
-        print(name)
+        cosponsors = rep_dict[rep]['total_cosponsors']
         if rep_dict[rep]['party'] == 'Republican':
             gop.append(rep)
-            graph.add_nodes_from([rep], party = 'r', label = name)
+            graph.add_nodes_from([rep], party = 'r', label = name, size = cosponsors)
         elif rep_dict[rep]['party'] == 'Democrat':
             dems.append(rep)
-            graph.add_nodes_from([rep], party = 'd', label = name)    
+            graph.add_nodes_from([rep], party = 'd', label = name, size = cosponsors)    
         else: 
             ind.append(rep)
-            graph.add_nodes_from([rep], party = 'o', label = name)        
+            graph.add_nodes_from([rep], party = 'o', label = name, size = cosponsors)        
     pos = nx.random_layout(graph)
-
-    #draw_graph_nodes(graph, pos, gop, dems, ind)
     
     return graph,pos
 def draw_graph_nodes(graph, pos, gop, dems, ind):
@@ -87,18 +83,12 @@ def graph_edges(rep_dict, graph, pos):
                     if rep in rep_dict[cosponsor]['relationships']:
                         num_sponsorships += rep_dict[cosponsor]['relationships'][rep]
                     checked_list.append((rep, cosponsor))
-                    graph.add_edge(cosponsor, rep, weight = num_sponsorships)
-    #nx.draw_networkx_edges(graph, pos)
+                    if num_sponsorships >= 1:
+                        graph.add_edge(cosponsor, rep, weight = num_sponsorships)
 
 def write_html(graph):
-    # write json formatted data
-    d = json_graph.node_link_data(graph) # node-link format to serialize
-    # write json
-    json.dump(d, open('force.json','w'))
-    print('Wrote node-link JSON data to force/force.json')
-    # open URL in running web browser
-    #http_server.load_url('force/force.html')
-    print('Or copy all files in force/ to webserver and load force/force.html')
+    d = json_graph.node_link_data(graph)
+    json.dump(d, open('mysite/gov_data/static/gov_data/force.json','w'))
 
 if __name__ == '__main__':
     c, db = open_db('GovData')
@@ -109,5 +99,4 @@ if __name__ == '__main__':
    
     write_html(graph)
 
-    #plt.show()
     commit_db(db)

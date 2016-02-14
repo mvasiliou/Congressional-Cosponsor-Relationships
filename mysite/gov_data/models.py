@@ -21,7 +21,7 @@ class Senator(models.Model):
     state = models.CharField(blank=True, null=True, max_length = 200)
 
     def __str__(self):
-        return self.first + ' ' + self.last
+        return str(self.id)
 
     class Meta:
         db_table = 'senators'
@@ -32,7 +32,6 @@ class Bill(models.Model):
     status = models.CharField(blank=True, null=True, max_length = 200)
     introduced_date = models.CharField(blank=True, null=True, max_length = 200)
     sponsor = models.ForeignKey(Senator, null = True)
-
     def __str__(self):
         return self.title
 
