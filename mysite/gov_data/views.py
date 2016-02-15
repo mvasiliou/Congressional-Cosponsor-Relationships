@@ -6,7 +6,7 @@ from django.template import loader
 
 def index(request):
     return render(request, 'gov_data/index.html')
-
+    
 def bills_index(request, bill_range = '1'):
     bill_range = int(bill_range)
     end = 25 * bill_range

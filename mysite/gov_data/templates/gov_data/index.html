@@ -13,8 +13,8 @@
     <body>        
         <div class='container'>
             <h1>View Categories</h1>
-            <a href = '{% url "bills_index" %}' class='btn btn-primary btn-lg btn-block' role='button'>Bills</a>
-            <a href = '{% url "senators_index" %}' class='btn btn-success btn-lg btn-block' role='button'>Senators</a>                
+            <a href = '{% url "gov_data:bills_index" %}' class='btn btn-primary btn-lg btn-block' role='button'>Bills</a>
+            <a href = '{% url "gov_data:senators_index" %}' class='btn btn-success btn-lg btn-block' role='button'>Senators</a>                
         </div>
         <script src="//d3js.org/d3.v3.min.js"></script>
         {% load staticfiles %}

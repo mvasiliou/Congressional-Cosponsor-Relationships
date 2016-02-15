@@ -15,21 +15,21 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
         <div class = 'container'>
             <div class = 'row'>
-                <a href = '{% url "index" %}' class='btn btn-success' role='button'>Home</a>
-                <a href = '{% url "bills_index" %}' class='btn btn-danger' role='button'>Bills</a>
-                <a href = '{% url "senators_index" %}' class='btn btn-primary' role='button'>Senators</a>
+                <a href = '{% url "gov_data:index" %}' class='btn btn-success' role='button'>Home</a>
+                <a href = '{% url "gov_data:bills_index" %}' class='btn btn-danger' role='button'>Bills</a>
+                <a href = '{% url "gov_data:senators_index" %}' class='btn btn-primary' role='button'>Senators</a>
             </div>
             <div class = 'row'>
                 <h1> {{bill.title}}</h1>
             </div>
             <div class = 'row'>
-                <p> Sponsor: <a href='{% url "senator_detail" sponsor.id %}'> {{sponsor.first}} {{sponsor.last}}</a></p>
+                <p> Sponsor: <a href='{% url "gov_data:senator_detail" sponsor.id %}'> {{sponsor.first}} {{sponsor.last}}</a></p>
             </div>
             <p>Cosponsors:</p>
             {% if cosponsor_list %}
                 <ul>
                 {% for cosponsor in cosponsor_list %}
-                    <li><a href='{% url "senator_detail" cosponsor.id %}'> {{cosponsor.first}} {{cosponsor.last}}</a></li>
+                    <li><a href='{% url "gov_data:senator_detail" cosponsor.id %}'> {{cosponsor.first}} {{cosponsor.last}}</a></li>
                 {% endfor %}
                 </ul>
             {% else %}

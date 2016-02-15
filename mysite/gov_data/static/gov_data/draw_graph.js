@@ -1,22 +1,20 @@
-var width = 1200,
-    height = 700;
+var width = 1000,
+    height = 900;
 
 var color = d3.scale.ordinal()
     .domain(['r', 'd', 'o'])
     .range(['#FF563B','#29859F','#FF9E3B']);
 
 var force = d3.layout.force()
-    .charge(-1000)
-    .linkDistance(100)
+    .charge(-300)
+    .linkDistance(function(d){ return (d.weight * 5); })
     .size([width, height]);
-
 
 //Creates box to plot in based on width and height
 var svg = d3.select("body").append("svg:svg")
     .attr("width", width)
     .attr("height", height)
     .append('svg:g')
-    .attr("transform", "translate(" + width / 4 + "," + height / 3 + ")");
 
 svg.append('svg:rect')
   .attr('width', width)
@@ -35,13 +33,13 @@ d3.json('/static/gov_data/force.json', function(error, graph) {
       .data(graph.links)
       .enter().append("line")
       .attr("class", "link")
-      .style("stroke-width", function(d) { return Math.sqrt(d.value); });
+      .style("stroke-width", function(d) { return d.weight / 2; });
 
   var node = svg.selectAll(".node")
       .data(graph.nodes)
       .enter().append("circle")
       .attr("class", "node")
-      .on('click', function(d, i) {
+      .on('dblclick', function(d, i) {
         url = 'senators/' + d.id + '/';
         window.location.href = url;
       })

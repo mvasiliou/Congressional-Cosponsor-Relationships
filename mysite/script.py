@@ -18,7 +18,7 @@ def get_rep_codes(c, rep_dict):
         first = rep[1]
         last = rep[2]
         party = rep[3]
-        name = first + '\n' + last
+        name = first + ' ' + last
         rep_dict[s_id] = {}
         rep_dict[s_id]['bills'] = []
         rep_dict[s_id]['name'] = name
@@ -37,7 +37,7 @@ def get_rep_weight(rep_dict):
         rep_dict[s_id]['relationships'] = {}
         total = 0 
         for bill_id in rep_dict[s_id]['bills']:
-            r = c.execute('SELECT cosponsor FROM cosponsorships WHERE bill = ' + str(bill_id))
+            r = c.execute('SELECT cosponsor_id FROM cosponsorships WHERE bill = ' + str(bill_id))
             cosponsors = r.fetchall()
             for rep in cosponsors:
                 rep_id = rep[0]
@@ -49,33 +49,23 @@ def get_rep_weight(rep_dict):
 
 def graph_nodes(rep_dict):
     graph = nx.Graph()
-    
-    gop = []
-    dems = []
-    ind = []
 
     for rep in rep_dict:
         name = rep_dict[rep]['name']
         cosponsors = rep_dict[rep]['total_cosponsors']
         if rep_dict[rep]['party'] == 'Republican':
-            gop.append(rep)
             graph.add_nodes_from([rep], party = 'r', label = name, size = cosponsors)
         elif rep_dict[rep]['party'] == 'Democrat':
-            dems.append(rep)
             graph.add_nodes_from([rep], party = 'd', label = name, size = cosponsors)    
         else: 
-            ind.append(rep)
             graph.add_nodes_from([rep], party = 'o', label = name, size = cosponsors)        
     pos = nx.random_layout(graph)
     
     return graph,pos
-def draw_graph_nodes(graph, pos, gop, dems, ind):
-    nx.draw_networkx_nodes(graph, pos, nodelist = gop, node_color = 'r')  
-    nx.draw_networkx_nodes(graph, pos, nodelist = dems, node_color = 'b')
-    nx.draw_networkx_nodes(graph, pos, nodelist = ind, node_color = 'b')
 
 def graph_edges(rep_dict, graph, pos):
     checked_list = []
+    all_actions = []
     for rep in graph.nodes():
         for cosponsor in rep_dict[rep]['relationships']:
                 if (rep, cosponsor) not in checked_list and (cosponsor, rep) not in checked_list:
@@ -83,20 +73,25 @@ def graph_edges(rep_dict, graph, pos):
                     if rep in rep_dict[cosponsor]['relationships']:
                         num_sponsorships += rep_dict[cosponsor]['relationships'][rep]
                     checked_list.append((rep, cosponsor))
-                    if num_sponsorships >= 1:
+                    all_actions.append(num_sponsorships)
+                    if num_sponsorships >= 15:
                         graph.add_edge(cosponsor, rep, weight = num_sponsorships)
+    
+    #Finds Average num actions between senators
+    actions = 0
+    for item in all_actions:
+        actions += item
+    average = actions / len(all_actions)
+
 
 def write_html(graph):
     d = json_graph.node_link_data(graph)
-    json.dump(d, open('mysite/gov_data/static/gov_data/force.json','w'))
+    json.dump(d, open('gov_data/static/gov_data/force.json','w'))
 
 if __name__ == '__main__':
     c, db = open_db('GovData')
     rep_dict = fill_rep_dict(c)
     graph,pos = graph_nodes(rep_dict)
-    graph_edges(rep_dict, graph, pos)
-    nx.write_gexf(graph, 'sponsors_graph.gexf')
-   
+    graph_edges(rep_dict, graph, pos)   
     write_html(graph)
-
     commit_db(db)

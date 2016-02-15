@@ -20,5 +20,5 @@ from django.http import HttpResponseRedirect
 urlpatterns = [
     url(r'^$', lambda r: HttpResponseRedirect('gov_data/')),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^gov_data/', include('gov_data.urls')),
+    url(r'^gov_data/', include('gov_data.urls', namespace = 'gov_data')),
 ]

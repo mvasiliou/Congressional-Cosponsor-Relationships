@@ -13,9 +13,9 @@
     <body>
         <div class = 'container'>
             <div class = 'row'>
-                    <a href = '{% url "index" %}' class='btn btn-success' role='button'>Home</a>
-                    <a href = '{% url "bills_index" %}' class='btn btn-danger' role='button'>Bills</a>
-                    <a href = '{% url "senators_index" %}' class='btn btn-primary' role='button'>Senators</a>
+                    <a href = '{% url "gov_data:index" %}' class='btn btn-success' role='button'>Home</a>
+                    <a href = '{% url "gov_data:bills_index" %}' class='btn btn-danger' role='button'>Bills</a>
+                    <a href = '{% url "gov_data:senators_index" %}' class='btn btn-primary' role='button'>Senators</a>
             </div>
             <h1> Sen. {{senator.first}} {{senator.last}} </h1>
             <h3> {{senator.party}} from the State of {{senator.state}}</h3>
@@ -24,7 +24,7 @@
             {% if bill_list %}
                 <ul>
                 {% for bill in bill_list %}
-                    <li><a href = '{% url "bill_detail" bill.bill_id %}'>{{ bill.title }}</a></li>
+                    <li><a href = '{% url "gov_data:bill_detail" bill.bill_id %}'>{{ bill.title }}</a></li>
                 {% endfor %}
                 </ul>
             {% else %}
