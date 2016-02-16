@@ -19,10 +19,11 @@ def get_rep_codes(c, rep_dict):
         last = rep[2]
         party = rep[3]
         name = first + ' ' + last
-        rep_dict[s_id] = {}
-        rep_dict[s_id]['bills'] = []
-        rep_dict[s_id]['name'] = name
-        rep_dict[s_id]['party'] = party
+        if party == 'Republican':
+            rep_dict[s_id] = {}
+            rep_dict[s_id]['bills'] = []
+            rep_dict[s_id]['name'] = name
+            rep_dict[s_id]['party'] = party
 
 def get_rep_bills(c, rep_dict):
     for s_id in rep_dict:
@@ -41,10 +42,11 @@ def get_rep_weight(rep_dict):
             cosponsors = r.fetchall()
             for rep in cosponsors:
                 rep_id = rep[0]
-                if rep_id not in rep_dict[s_id]['relationships']:
-                    rep_dict[s_id]['relationships'][rep_id] = 0
-                rep_dict[s_id]['relationships'][rep_id] += 1
-                total += 1
+                if rep_id in rep_dict:
+                    if rep_id not in rep_dict[s_id]['relationships']:
+                        rep_dict[s_id]['relationships'][rep_id] = 0
+                    rep_dict[s_id]['relationships'][rep_id] += 1
+                    total += 1
         rep_dict[s_id]['total_cosponsors'] = total
 
 def graph_nodes(rep_dict):
@@ -74,7 +76,7 @@ def graph_edges(rep_dict, graph, pos):
                         num_sponsorships += rep_dict[cosponsor]['relationships'][rep]
                     checked_list.append((rep, cosponsor))
                     all_actions.append(num_sponsorships)
-                    if num_sponsorships >= 15:
+                    if num_sponsorships >= 10:
                         graph.add_edge(cosponsor, rep, weight = num_sponsorships)
     
     #Finds Average num actions between senators
@@ -86,7 +88,7 @@ def graph_edges(rep_dict, graph, pos):
 
 def write_html(graph):
     d = json_graph.node_link_data(graph)
-    json.dump(d, open('gov_data/static/gov_data/force.json','w'))
+    json.dump(d, open('gov_data/static/gov_data/republican_force.json','w'))
 
 if __name__ == '__main__':
     c, db = open_db('GovData')

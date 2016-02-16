@@ -44,6 +44,7 @@ class Senators(models.Model):
     class_field = models.TextField(db_column='class', blank=True, null=True)  # Field renamed because it was a Python reserved word.
     rank = models.TextField(blank=True, null=True)
     state = models.TextField(blank=True, null=True)
+    congress = models.IntegerField(blank= True, null=True)
 
     class Meta:
         db_table = 'senators'

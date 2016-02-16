@@ -8,15 +8,32 @@
         <title>Home</title>
         {% load staticfiles %}
         <link rel="stylesheet" type="text/css" href="{% static 'gov_data/style.css' %}" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">   
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
     </head>
-    <body>        
-        <div class='container'>
-            <h1>View Categories</h1>
-            <a href = '{% url "gov_data:bills_index" %}' class='btn btn-primary btn-lg btn-block' role='button'>Bills</a>
-            <a href = '{% url "gov_data:senators_index" %}' class='btn btn-success btn-lg btn-block' role='button'>Senators</a>                
-        </div>
+    <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="//d3js.org/d3.v3.min.js"></script>
-        {% load staticfiles %}
-        <script src = '{% static "gov_data/draw_graph.js" %}'></script>
+        <div class='container'>
+            <div class = 'row row-margin'>
+                <a href = '{% url "gov_data:index" %}' class='btn btn-success' role='button'>Home</a>
+                <a href = '{% url "gov_data:bills_index" %}' class='btn btn-danger' role='button'>Bills</a>
+                <a href = '{% url "gov_data:senators_index" %}' class='btn btn-primary' role='button'>Senators</a>
+            </div>           
+            <div class = 'row' id = 'box'>    
+                {% load staticfiles %}
+                <script src = '{% static "gov_data/draw_graph.js" %}'></script>
+            </div>
+            <div class = 'row'>
+                <button class = 'btn' id = 'senate'>View Whole Senate</button>
+                <button class = 'btn btn-danger' id = 'republican'>View Republicans</button>
+                <button class = 'btn btn-primary' id = 'democrat'>View Democrats</button>
+                <button class = 'btn' id = 'edge_1'>1</button>
+                <button class = 'btn' id = 'edge_5'>5</button>
+                <button class = 'btn' id = 'edge_10'>10</button>
+
+            </div>
+            <div class ='row row-margin'>
+                <p>Each bubble represents a Senator in the U.S Senate. The larger the bubble, the more times each of their bills has been cosponsored by a fellow Senator. If two Senators have cosponsored each others bills 10 or more times, a link is drawn between the two bubbles. The more cooperation between the two, the closer and larger their link is.</p>
+            </div>
+        </div>
     </body>
