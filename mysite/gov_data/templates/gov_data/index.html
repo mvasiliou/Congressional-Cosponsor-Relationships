@@ -9,16 +9,16 @@
         {% load staticfiles %}
         <link rel="stylesheet" type="text/css" href="{% static 'gov_data/style.css' %}" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
-    </head>
-    <body>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="//d3js.org/d3.v3.min.js"></script>
-        <div class='container'>
-            <div class = 'row row-margin'>
-                <a href = '{% url "gov_data:index" %}' class='btn btn-success' role='button'>Home</a>
-                <a href = '{% url "gov_data:bills_index" %}' class='btn btn-danger' role='button'>Bills</a>
-                <a href = '{% url "gov_data:senators_index" %}' class='btn btn-primary' role='button'>Senators</a>
-            </div>           
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-inverse">
+            <a class='btn btn-success nav-item nav-link' role='button' href = '{% url "gov_data:index" %}'>Home</a>
+            <a class='btn btn-danger nav-item nav-link' role='button' href='{% url "gov_data:bills_index" %}'>Bills</a>
+            <a class='btn btn-primary nav-item nav-link' role='button' href='{% url "gov_data:senators_index" %}'>Senators</a>
+        </nav>
+        <div class='container'>          
             <div class = 'row' id = 'box'>    
                 {% load staticfiles %}
                 <script src = '{% static "gov_data/draw_graph.js" %}'></script>

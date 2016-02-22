@@ -9,16 +9,15 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
         {% load staticfiles %}
         <link rel="stylesheet" type="text/css" href="{% static 'gov_data/senator_index_style.css' %}" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
     </head>
     <body>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+        <nav class="navbar navbar-dark bg-inverse">
+            <a class='btn btn-success nav-item nav-link' role='button' href = '{% url "gov_data:index" %}'>Home</a>
+            <a class='btn btn-danger nav-item nav-link' role='button' href='{% url "gov_data:bills_index" %}'>Bills</a>
+            <a class='btn btn-primary nav-item nav-link' role='button' href='{% url "gov_data:senators_index" %}'>Senators</a>
+        </nav>        
         <div class = 'container'>
-            <div class = 'row'>
-                <a href = '{% url "gov_data:index" %}' class='btn btn-success' role='button'>Home</a>
-                <a href = '{% url "gov_data:bills_index" %}' class='btn btn-danger' role='button'>Bills</a>
-                <a href = '{% url "gov_data:senators_index" %}' class='btn btn-primary' role='button'>Senators</a>
-            </div>
             <div class = 'row'>
                 <h1> {{bill.title}}</h1>
             </div>

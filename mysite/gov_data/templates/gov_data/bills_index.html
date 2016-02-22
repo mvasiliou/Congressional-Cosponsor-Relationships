@@ -11,12 +11,12 @@
         <link rel="stylesheet" type="text/css" href="{% static 'gov_data/senator_index_style.css' %}" />
     </head>
     <body>
+        <nav class="navbar navbar-dark bg-inverse">
+            <a class='btn btn-success nav-item nav-link' role='button' href = '{% url "gov_data:index" %}'>Home</a>
+            <a class='btn btn-danger nav-item nav-link' role='button' href='{% url "gov_data:bills_index" %}'>Bills</a>
+            <a class='btn btn-primary nav-item nav-link' role='button' href='{% url "gov_data:senators_index" %}'>Senators</a>
+        </nav> 
         <div class='container'>
-            <div class = 'row'>
-                <a href = '{% url "gov_data:index" %}' class='btn btn-success' role='button'>Home</a>
-                <a href = '{% url "gov_data:bills_index" %}' class='btn btn-danger' role='button'>Bills</a>
-                <a href = '{% url "gov_data:senators_index" %}' class='btn btn-primary' role='button'>Senators</a>
-            </div>
             <div class='row'>
                 <div class='col-sm-offset-4 col-sm-4'>
                     <h1>Bills List</h1> 
