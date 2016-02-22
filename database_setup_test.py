@@ -2,13 +2,8 @@
 import sqlite3
 from helper_functions import make_url_request, open_db, commit_db
 
-def create_tables(c):
-    c.execute('CREATE TABLE senators(id integer PRIMARY KEY, first text, last text, party text, class_field text, rank text, state text, congress integer)')
-    c.execute('CREATE TABLE bills(bill_id integer PRIMARY KEY, title text, status text, introduced_date text, sponsor_id integer)')
-    c.execute('CREATE TABLE cosponsorships(action_id integer PRIMARY KEY, bill integer, cosponsor integer, joined_date text)')
-
 def add_rep_to_db(c):
-    url = "https://www.govtrack.us/api/v2/role?current__exact=true&&role_type__exact=senator"
+    url = "https://www.govtrack.us/api/v2/role?startdate__gt=1950-01-01&&role_type__exact=senator&&limit=6000"
     data = make_url_request(url)
     for senator in data['objects']:
         s_id = senator['person']['id']
@@ -16,12 +11,24 @@ def add_rep_to_db(c):
         last = senator['person']['lastname']
         party = senator['party']
         s_class = senator['senator_class']
-        rank = senator['senator_rank_label']
         state = senator['state']
-        congress_list = senator['congress_numbers']
-        for congress in congress_list:
-            db_args = (s_id, first, last, party, s_class, rank, state, congress)
+        start = senator['congress_numbers'][0]
+        end = senator['congress_numbers'][-1]
+        print(s_id)
+        print(start, end)
+        try:
+            db_args = (s_id, first, last, party, s_class, state, start, end)
             c.execute('INSERT INTO senators VALUES(?,?,?,?,?,?,?,?)', db_args)  
+        except:
+            r = c.execute('SELECT start, end FROM senators WHERE id =' + str(s_id))
+            date_list = r.fetchall()
+            print(date_list)
+            current_start = date_list[0][0]
+            current_end = date_list[0][1]
+            if start < int(current_start):
+                c.execute('UPDATE senators SET start =' + str(start) + ' WHERE id =' + str(s_id))
+            elif end > int(current_end):
+                c.execute('UPDATE senators SET end =' + str(end) + ' WHERE id =' + str(s_id))
 
 def add_sponsored_bills(c):
     r = c.execute('SELECT id FROM senators')
@@ -56,8 +63,7 @@ def add_cosponsorships(c):
             c.execute('INSERT INTO cosponsorships VALUES(?,?,?,?)', db_args)
 
 if __name__ == '__main__':
-    c, db = open_db('GovData')
-    create_tables(c)
+    c, db = open_db('mysite/GovData')
     add_rep_to_db(c)
     #add_sponsored_bills(c)
     #add_cosponsorships(c)

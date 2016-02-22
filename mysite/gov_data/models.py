@@ -17,8 +17,9 @@ class Senator(models.Model):
     last = models.CharField(blank=True, null=True, max_length = 200)
     party = models.CharField(blank=True, null=True, max_length = 200)
     class_field = models.CharField(db_column='class', blank=True, null=True, max_length = 200)  # Field renamed because it was a Python reserved word.
-    rank = models.CharField(blank=True, null=True, max_length = 200)
     state = models.CharField(blank=True, null=True, max_length = 200)
+    start = models.CharField(blank = True, null = True, max_length = 10)
+    end = models.CharField(blank = True, null = True, max_length = 10)
 
     def __str__(self):
         return str(self.id)
@@ -32,6 +33,7 @@ class Bill(models.Model):
     status = models.CharField(blank=True, null=True, max_length = 200)
     introduced_date = models.CharField(blank=True, null=True, max_length = 200)
     sponsor = models.ForeignKey(Senator, null = True)
+    congress = models.CharField(blank = True, null = True, max_length = 10)
     def __str__(self):
         return self.title
 
@@ -43,6 +45,7 @@ class Cosponsorship(models.Model):
     bill = models.IntegerField(blank=True, null=True)
     cosponsor = models.ForeignKey(Senator, null = True)
     joined_date = models.CharField(blank=True, null=True, max_length = 50)
+    congress = models.CharField(blank = True, null = True, max_length = 10)
 
     def __str__(self):
         return str(self.bill)
