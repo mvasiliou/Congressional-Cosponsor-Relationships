@@ -132,4 +132,8 @@ $(document).ready(function(){
   $("body").on("click", "#edge_10", (function () {
     add_nodes_and_edges('/static/gov_data/ten_force.json')
   }));
+
+  $( "#select-table" ).change(function(value) {
+      add_nodes_and_edges('static/gov_data/' + value +'_force.json')
+  });
 });
