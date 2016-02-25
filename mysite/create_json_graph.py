@@ -1,9 +1,18 @@
+# Create JSON Graph
+#
+# This creates a json file that tells us what the nodes in our sponsorship web 
+# will be and what each edge will be
+
 import networkx as nx
 from networkx.readwrite import json_graph
 from helper_functions import open_db, commit_db
 import json
 
 def fill_rep_dict(c):
+    '''
+    This pulls data from our SQL database and adds it to a python dictionary, 
+    which we will later use for graphing
+    '''
     rep_dict = {}
     get_rep_codes(c, rep_dict)
     get_rep_bills(c, rep_dict)
@@ -11,6 +20,10 @@ def fill_rep_dict(c):
     return rep_dict    
 
 def get_rep_codes(c, rep_dict):
+    '''
+    This executes a SQL query to get the ID, names, and parties of each senator
+    and adds these fields to our representative dictionary
+    '''
     r = c.execute('SELECT id, first, last, party FROM SENATORS')
     senators = r.fetchall()
     for rep in senators:
@@ -25,6 +38,10 @@ def get_rep_codes(c, rep_dict):
         rep_dict[s_id]['party'] = party
 
 def get_rep_bills(c, rep_dict):
+    '''
+    This executes a SQL query to find every bill that each senator has sponsored
+    and adds it to rep_dict
+    '''
     for s_id in rep_dict:
         r = c.execute('SELECT bill_id FROM bills WHERE sponsor_id = ' + str(s_id))
         bills = r.fetchall()
@@ -33,6 +50,11 @@ def get_rep_bills(c, rep_dict):
             rep_dict[s_id]['bills'].append(bill_id)
 
 def get_rep_weight(rep_dict):
+    '''
+    This sums up the number of unique senators whose bills a given senator has
+    co-sponsored (we call these relationships) and the number of unique 
+    co-sponsors a given senator has signing on to his bills (total_cosponsors)
+    '''
     for s_id in rep_dict:
         rep_dict[s_id]['relationships'] = {}
         total = 0 
@@ -48,6 +70,11 @@ def get_rep_weight(rep_dict):
         rep_dict[s_id]['total_cosponsors'] = total
 
 def graph_nodes(rep_dict):
+    '''
+    This generates the relevant data for the nodes in our networkx graph,
+    where the label is the name of the Senator, the colour corresponds to their
+    party, and the size corresponds to total_cosponsors
+    '''
     graph = nx.Graph()
 
     for rep in rep_dict:
@@ -64,6 +91,11 @@ def graph_nodes(rep_dict):
     return graph,pos
 
 def graph_edges(rep_dict, graph, pos):
+    '''
+    Using the networkx graph object initialized in graph_nodes, this adds edges
+    between the nodes, where each edge represents a relationship between the two
+    senators.
+    '''
     checked_list = []
     all_actions = []
     for rep in graph.nodes():
@@ -74,7 +106,7 @@ def graph_edges(rep_dict, graph, pos):
                         num_sponsorships += rep_dict[cosponsor]['relationships'][rep]
                     checked_list.append((rep, cosponsor))
                     all_actions.append(num_sponsorships)
-                    if num_sponsorships >= 10:
+                    if num_sponsorships >= 10: # we should go back and check this threshold again
                         graph.add_edge(cosponsor, rep, weight = num_sponsorships)
     
     #Finds Average num actions between senators
@@ -85,6 +117,9 @@ def graph_edges(rep_dict, graph, pos):
 
 
 def write_html(graph):
+    '''
+    This dumps the graph data from graph_nodes and graph_edges into a JSON file
+    '''
     d = json_graph.node_link_data(graph)
     json.dump(d, open('gov_data/static/gov_data/ten_force.json','w'))
 
