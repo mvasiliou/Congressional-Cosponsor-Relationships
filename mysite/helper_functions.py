@@ -1,3 +1,7 @@
+# Helper Functions
+#
+# This contains a some helper functions for interacting with SQL databases
+
 import urllib.request
 import json
 import sqlite3
