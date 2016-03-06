@@ -64,20 +64,23 @@ $(document).ready(function(){
                   .style("r", function(l) {
                       if (d === l)
                         return (d.size / 10) + 5;
-                      
+                      else
+                        return (l.size / 30) + 5;  
                       })
 
               link.transition()
                   .duration(300)
                   .style('stroke', function(l) {
-                  if (d === l.source || d === l.target)
-                    return color(d.party);
+                  if (d === l.target)
+                    return color(l.source.party);
+                  else if (d === l.source)
+                    return color(l.target.party);
                   else
                     return '#C2C2C2';
                   })
                   .style('stroke-width', function(l) {
                   if (d === l.source || d === l.target)
-                    return l.weight;
+                    return l.weight / 2;
                   else
                     return l.weight / 10;
                   });
@@ -114,26 +117,16 @@ $(document).ready(function(){
   }));
 
   $("body").on("click", "#democrat", (function () {
-    add_nodes_and_edges('/static/gov_data/democrat_force.json')
+    var value = $("select").find('option:selected').val(); 
+    add_nodes_and_edges('/static/gov_data/' + value + '_democrat_force.json')
   }));  
 
   $("body").on("click", "#republican", (function () {
-    add_nodes_and_edges('/static/gov_data/republican_force.json')
+    var value = $("select").find('option:selected').val();
+    add_nodes_and_edges("/static/gov_data/" + value + "_republican_force.json")
   }));
 
-  $("body").on("click", "#edge_1", (function () {
-    add_nodes_and_edges('/static/gov_data/one_force.json')
-  }));
-
-  $("body").on("click", "#edge_5", (function () {
-    add_nodes_and_edges('/static/gov_data/five_force.json')
-  }));
-
-  $("body").on("click", "#edge_10", (function () {
-    add_nodes_and_edges('/static/gov_data/ten_force.json')
-  }));
-
-  $( "#select-table" ).change(function(value) {
-      add_nodes_and_edges('static/gov_data/' + value +'_force.json')
+  $('select').on('change', function() {
+      add_nodes_and_edges('/static/gov_data/' + this.value + '_force.json')
   });
 });

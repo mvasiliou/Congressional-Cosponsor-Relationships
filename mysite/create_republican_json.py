@@ -1,9 +1,9 @@
 import networkx as nx
-from networkx.readwrite import json_graph
+
+def fill_rep_dict(c):from networkx.readwrite import json_graph
 from helper_functions import open_db, commit_db
 import json
 
-def fill_rep_dict(c):
     rep_dict = {}
     get_rep_codes(c, rep_dict)
     get_rep_bills(c, rep_dict)

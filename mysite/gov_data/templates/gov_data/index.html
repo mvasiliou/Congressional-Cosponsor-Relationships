@@ -13,12 +13,12 @@
         <script src="//d3js.org/d3.v3.min.js"></script>
     </head>
     <body>
-        <nav class="navbar navbar-dark bg-inverse">
+        <nav class="navbar navbar-dark bg-inverse row-margin">
             <a class='btn btn-success nav-item nav-link' role='button' href = '{% url "gov_data:index" %}'>Home</a>
             <a class='btn btn-danger nav-item nav-link' role='button' href='{% url "gov_data:bills_index" %}'>Bills</a>
             <a class='btn btn-primary nav-item nav-link' role='button' href='{% url "gov_data:senators_index" %}'>Senators</a>
         </nav>
-        <div class='container'>          
+        <div class='container'>
             <div class = 'row' id = 'box'>    
                 {% load staticfiles %}
                 <script src = '{% static "gov_data/draw_graph.js" %}'></script>
@@ -27,10 +27,34 @@
                 <button class = 'btn' id = 'senate'>View Whole Senate</button>
                 <button class = 'btn btn-danger' id = 'republican'>View Republicans</button>
                 <button class = 'btn btn-primary' id = 'democrat'>View Democrats</button>
-                <button class = 'btn' id = 'edge_1'>1</button>
-                <button class = 'btn' id = 'edge_5'>5</button>
-                <button class = 'btn' id = 'edge_10'>10</button>
-
+                <select>
+                    <option value="114">2014 - 2016 (114th)</option>
+                    <option value="113">2012 - 2014 (113th)</option>
+                    <option value="112">2010 - 2012 (112th)</option>
+                    <option value="111">2008 - 2010 (111th)</option>
+                    <option value="110">2006 - 2008 (110th)</option>
+                    <option value="109">2004 - 2006 (109th)</option>
+                    <option value="109">2002 - 2004 (108th)</option>
+                    <option value="107">2000 - 2002 (107th)</option>
+                    <option value="106">1998 - 2000 (106th)</option>
+                    <option value="105">1996 - 1998 (105th)</option>
+                    <option value="104">1994 - 1996 (104th)</option>
+                    <option value="103">1992 - 1994 (103rd)</option>
+                    <option value="102">1990 - 1992 (102nd)</option>
+                    <option value="101">1988 - 1990 (101st)</option>
+                    <option value="100">1986 - 1988 (100th)</option>
+                    <!--<option value="99">99</option>
+                    <option value="98">98</option>
+                    <option value="97">97</option>
+                    <option value="96">96</option>
+                    <option value="95">95</option> 
+                    <option value="94">94</option> 
+                    <option value="93">93</option> 
+                    <option value="92">92</option> 
+                    <option value="91">91</option> 
+                    <option value="91">91</option> 
+                    <option value="90">90</option> !-->
+                </select>
             </div>
             <div class ='row row-margin'>
                 <p>Each bubble represents a Senator in the U.S Senate. The larger the bubble, the more times each of their bills has been cosponsored by a fellow Senator. If two Senators have cosponsored each others bills 10 or more times, a link is drawn between the two bubbles. The more cooperation between the two, the closer and larger their link is.</p>

@@ -32,5 +32,3 @@ def transitions(sponsorship):
 
 def markov_rank(transition_matrix, num_steps):
 	return None
-
-

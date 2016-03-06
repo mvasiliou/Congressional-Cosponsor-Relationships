@@ -8,25 +8,26 @@ from networkx.readwrite import json_graph
 from helper_functions import open_db, commit_db
 import json
 
-def fill_rep_dict(c):
+def fill_rep_dict(c, congress):
     '''
     This pulls data from our SQL database and adds it to a python dictionary, 
     which we will later use for graphing
     '''
     rep_dict = {}
-    get_rep_codes(c, rep_dict)
-    get_rep_bills(c, rep_dict)
+    get_rep_codes(c, rep_dict, congress)
+    get_rep_bills(c, rep_dict, congress)
     get_rep_weight(rep_dict)
     return rep_dict    
 
-def get_rep_codes(c, rep_dict):
+def get_rep_codes(c, rep_dict, congress):
     '''
     This executes a SQL query to get the ID, names, and parties of each senator
     and adds these fields to our representative dictionary
     '''
-    r = c.execute('SELECT id, first, last, party FROM SENATORS')
+    r = c.execute('SELECT id, first, last, party FROM SENATORS WHERE start <=' + congress + ' AND end >=' + congress)
     senators = r.fetchall()
     for rep in senators:
+        print(rep)
         s_id = rep[0]
         first = rep[1]
         last = rep[2]
@@ -37,15 +38,16 @@ def get_rep_codes(c, rep_dict):
         rep_dict[s_id]['name'] = name
         rep_dict[s_id]['party'] = party
 
-def get_rep_bills(c, rep_dict):
+def get_rep_bills(c, rep_dict, congress):
     '''
     This executes a SQL query to find every bill that each senator has sponsored
     and adds it to rep_dict
     '''
     for s_id in rep_dict:
-        r = c.execute('SELECT bill_id FROM bills WHERE sponsor_id = ' + str(s_id))
+        r = c.execute('SELECT bill_id FROM bills WHERE sponsor_id = ' + str(s_id) + ' AND congress = ' + congress)
         bills = r.fetchall()
         for bill in bills:
+            print(bill)
             bill_id = bill[0]
             rep_dict[s_id]['bills'].append(bill_id)
 
@@ -62,6 +64,7 @@ def get_rep_weight(rep_dict):
             r = c.execute('SELECT cosponsor_id FROM cosponsorships WHERE bill = ' + str(bill_id))
             cosponsors = r.fetchall()
             for rep in cosponsors:
+                print(rep)
                 rep_id = rep[0]
                 if rep_id not in rep_dict[s_id]['relationships']:
                     rep_dict[s_id]['relationships'][rep_id] = 0
@@ -102,8 +105,11 @@ def graph_edges(rep_dict, graph, pos):
         for cosponsor in rep_dict[rep]['relationships']:
                 if (rep, cosponsor) not in checked_list and (cosponsor, rep) not in checked_list:
                     num_sponsorships = rep_dict[rep]['relationships'][cosponsor]
-                    if rep in rep_dict[cosponsor]['relationships']:
-                        num_sponsorships += rep_dict[cosponsor]['relationships'][rep]
+                    if cosponsor in rep_dict:
+                        if rep in rep_dict[cosponsor]['relationships']:
+                            num_sponsorships += rep_dict[cosponsor]['relationships'][rep]
+                    else: 
+                        print(cosponsor)
                     checked_list.append((rep, cosponsor))
                     all_actions.append(num_sponsorships)
                     if num_sponsorships >= 10: # we should go back and check this threshold again
@@ -115,18 +121,20 @@ def graph_edges(rep_dict, graph, pos):
         actions += item
     average = actions / len(all_actions)
 
-
-def write_html(graph):
+def write_json(graph, congress):
     '''
     This dumps the graph data from graph_nodes and graph_edges into a JSON file
     '''
     d = json_graph.node_link_data(graph)
-    json.dump(d, open('gov_data/static/gov_data/ten_force.json','w'))
+    json.dump(d, open('gov_data/static/gov_data/'+ str(congress) + '_force.json','w'))
 
 if __name__ == '__main__':
     c, db = open_db('GovData')
-    rep_dict = fill_rep_dict(c)
-    graph,pos = graph_nodes(rep_dict)
-    graph_edges(rep_dict, graph, pos)   
-    write_html(graph)
+    start = 110
+    for congress in range(start, 111):
+        congress = str(congress)
+        rep_dict = fill_rep_dict(c, congress)
+        graph,pos = graph_nodes(rep_dict)
+        graph_edges(rep_dict, graph, pos)   
+        write_json(graph, congress)
     commit_db(db)
