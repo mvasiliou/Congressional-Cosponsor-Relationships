@@ -27,23 +27,23 @@
                 {% endfor %}
                 {% endif %}
             </div>
-            
+
             <div id="graph" class="aGraph row" style="float: top"></div>
             <script>
             /* implementation heavily influenced by http://bl.ocks.org/1166403 */
             
             // define dimensions of graph; pretty much arbitrary/style decision
-            var m = [80, 80, 80, 80]; // margins
+            var m = [100, 100, 100, 100]; // margins
             var w = 800 - m[1] - m[3]; // width
-            var h = 400 - m[0] - m[2]; // height
+            var h = 600 - m[0] - m[2]; // height
         
             // data and x_axis_labels arrays (lists)
             var data = {{score_list}};
-            var x_axis_labels = {{congress_list}}//[95, 96, 97, 98, 99]
+            var x_axis_labels = {{congress_list}}
 
             // sets boundaries of the graph
             var x = d3.scale.linear().domain([x_axis_labels[0], x_axis_labels[x_axis_labels.length - 1] ]).range([0, w]);
-            var y = d3.scale.linear().domain([0, 10000]).range([h, 0]);
+            var y = d3.scale.linear().domain([0, 20000]).range([h, 0]);
 
 
             // create a line function that can convert data and labels into x and y points
@@ -65,6 +65,11 @@
                       .attr("class", "x axis")
                       .attr("transform", "translate(0," + h + ")")
                       .call(xAxis);
+                graph.append("text")
+                    .attr("x", w / 2 )
+                    .attr("y", 500 )
+                    .style("text-anchor", "middle")
+                    .text("Congress");
 
                 // makes the y-axis
                 var yAxisLeft = d3.svg.axis().scale(y).orient("left");
@@ -72,6 +77,19 @@
                       .attr("class", "y axis")
                       .attr("transform", "translate(0,0)")
                       .call(yAxisLeft);
+                graph.append("text")
+                    .attr("transform", "rotate(-90)")
+                    .attr("x", -200 )
+                    .attr("y", -65 )
+                    .style("text-anchor", "middle")
+                    .text("Leadership Score");
+
+                graph.append('text')
+                    // .attr("class", "title")
+                    .attr("x", w / 2 )
+                    .attr("y", -10 )
+                    .style("text-anchor", "middle")
+                    .text("Leadership Score by Congress")
 
                 graph.append("svg:path").attr("d", line(data));
             </script>
