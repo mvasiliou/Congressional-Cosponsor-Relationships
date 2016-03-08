@@ -20,6 +20,11 @@
             <div class='row row-margin'>
                 <h1>Sen. {{senator.first}} {{senator.last}} </h1>
                 <h3> {{senator.party}} from the State of {{senator.state}}</h3>
+                {% if leadership_scores %}
+                {% for score in leadership_scores %}
+                    <p>Congress: {{score.congress}} Score: {{score.bill_success_score}} {{score.cosponsors_in}} {{score.cosponsors_out}}</p>
+                {% endfor %}
+                {% endif %}
             </div>
             <div class='row row-margin'>
                 <h2>Bills Introduced</h2>
