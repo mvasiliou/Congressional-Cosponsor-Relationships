@@ -78,6 +78,8 @@ def get_leadership_scores(c, rep_dict, congress):
         print(score)
         try: 
             score = score[0][0]
+        except:
+            score = 0
         rep_dict[s_id]['leadership_score'] = score
 
 def graph_nodes(rep_dict):
