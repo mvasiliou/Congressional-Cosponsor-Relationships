@@ -27,8 +27,9 @@
                 {% endfor %}
                 {% endif %}
             </div>
-            <div id="graph" class="aGraph" style="float: right"></div>
-        <script>
+            
+            <div id="graph" class="aGraph row" style="float: top"></div>
+            <script>
             /* implementation heavily influenced by http://bl.ocks.org/1166403 */
             
             // define dimensions of graph; pretty much arbitrary/style decision
@@ -42,7 +43,7 @@
 
             // sets boundaries of the graph
             var x = d3.scale.linear().domain([x_axis_labels[0], x_axis_labels[x_axis_labels.length - 1] ]).range([0, w]);
-            var y = d3.scale.linear().domain([0, 2000]).range([h, 0]);
+            var y = d3.scale.linear().domain([0, 10000]).range([h, 0]);
 
 
             // create a line function that can convert data and labels into x and y points
@@ -62,18 +63,18 @@
                 var xAxis = d3.svg.axis().scale(x).ticks(x_axis_labels.length);
                 graph.append("svg:g")
                       .attr("class", "x axis")
-                      .attr("transform", "translate(70," + h + ")")
+                      .attr("transform", "translate(0," + h + ")")
                       .call(xAxis);
 
                 // makes the y-axis
                 var yAxisLeft = d3.svg.axis().scale(y).orient("left");
                 graph.append("svg:g")
                       .attr("class", "y axis")
-                      .attr("transform", "translate(70,0)")
+                      .attr("transform", "translate(0,0)")
                       .call(yAxisLeft);
 
                 graph.append("svg:path").attr("d", line(data));
-        </script>
+            </script>
             <div class='row row-margin'>
                 <h2>Bills Introduced</h2>
                 {% if bill_list %}
