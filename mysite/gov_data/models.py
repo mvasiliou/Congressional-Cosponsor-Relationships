@@ -53,7 +53,6 @@ class Cosponsorship(models.Model):
         db_table = 'cosponsorships'
 
 class Leadership(models.Model):
-    leadership_id = models.IntegerField(primary_key = True, blank =True, null = False)
     senator_id = models.IntegerField(blank = True, null = True)
     congress = models.IntegerField(blank = True, null = True)
     bill_success_score = models.IntegerField(blank = True, null = True)

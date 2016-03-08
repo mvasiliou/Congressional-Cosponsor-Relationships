@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
-from .models import Bill, Senator, Cosponsorship
+from .models import Bill, Senator, Cosponsorship, Leadership
 from django.template import loader
 # Create your views here.
 
@@ -40,5 +40,7 @@ def senators_index(request):
 def senator_detail(request, senator_id):
     senator = Senator.objects.get(pk = senator_id)
     bill_list = Bill.objects.filter(sponsor = senator_id)
-    context = {'senator': senator, 'bill_list': bill_list,}
+    leadership_scores = Leadership.objects.filter(senator_id = senator_id).order_by('congress')
+    print(leadership_scores)
+    context = {'senator': senator, 'bill_list': bill_list, 'leadership_scores': leadership_scores}
     return render(request, 'gov_data/senator_detail.html', context)

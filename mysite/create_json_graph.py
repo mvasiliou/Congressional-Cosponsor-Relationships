@@ -134,7 +134,7 @@ def write_json(graph, congress):
 
 if __name__ == '__main__':
     c, db = open_db('GovData1')
-    start = 95
+    start = 110
     for congress in range(start, 115):
         congress = str(congress)
         rep_dict = fill_rep_dict(c, congress)
