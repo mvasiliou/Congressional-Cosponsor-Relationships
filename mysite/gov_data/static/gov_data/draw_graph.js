@@ -51,7 +51,7 @@ $(document).ready(function(){
           .data(graph.nodes)
           .enter().append("circle")
           .attr("class", "node")
-          .attr("r", function(d){ return (d.size / 15) + 5})
+          .attr("r", function(d){ return (d.size / 500) + 5})
           .style("fill", function(d) { return color(d.party); })
           .call(force.drag)
           .on('dblclick', function(d, i) {
@@ -63,9 +63,9 @@ $(document).ready(function(){
                   .duration(300)
                   .style("r", function(l) {
                       if (d === l)
-                        return (d.size / 10) + 5;
+                        return (d.size / 250) + 5;
                       else
-                        return (l.size / 30) + 5;  
+                        return (l.size / 1500) + 5;  
                       })
 
               link.transition()
@@ -88,7 +88,7 @@ $(document).ready(function(){
           .on('mouseout', function(d) {
               node.transition()
                 .duration(300)
-                .style('r', function(l){ return (l.size / 15) + 5})
+                .style('r', function(l){ return (l.size / 500) + 5})
               link.transition()
                 .duration(300)
                 .style('stroke', '#C2C2C2')

@@ -47,6 +47,14 @@ def add_sponsored_bills(c):
             db_args = (bill_id, title, status, introduced_date, sponsor_id, congress)
             c.execute('INSERT INTO bills VALUES(?,?,?,?,?,?)', db_args)
 
+def update_bill_with_status(c):
+    r = c.execute('SELECT id FROM bills')
+    bills = r.fetchall()
+    for bill in bills:
+        bill_id = bill[0]
+        url = 'https://www.govtrack.us/api/v2/vote?related_bill__exact=' + bill_id
+        data = make_url_request(url)
+        
 def add_cosponsorships(c):
     r = c.execute('SELECT bill_id FROM bills')
     bills = r.fetchall()

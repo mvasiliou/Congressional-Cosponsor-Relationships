@@ -16,7 +16,8 @@ def fill_rep_dict(c, congress):
     rep_dict = {}
     get_rep_codes(c, rep_dict, congress)
     get_rep_bills(c, rep_dict, congress)
-    get_rep_weight(rep_dict)
+    get_rep_relationships(rep_dict)
+    get_leadership_scores(c, rep_dict, congress)
     return rep_dict    
 
 def get_rep_codes(c, rep_dict, congress):
@@ -51,7 +52,7 @@ def get_rep_bills(c, rep_dict, congress):
             bill_id = bill[0]
             rep_dict[s_id]['bills'].append(bill_id)
 
-def get_rep_weight(rep_dict):
+def get_rep_relationships(rep_dict):
     '''
     This sums up the number of unique senators whose bills a given senator has
     co-sponsored (we call these relationships) and the number of unique 
@@ -69,8 +70,15 @@ def get_rep_weight(rep_dict):
                 if rep_id not in rep_dict[s_id]['relationships']:
                     rep_dict[s_id]['relationships'][rep_id] = 0
                 rep_dict[s_id]['relationships'][rep_id] += 1
-                total += 1
-        rep_dict[s_id]['total_cosponsors'] = total
+
+def get_leadership_scores(c, rep_dict, congress):
+    for s_id in rep_dict:
+        r = c.execute('SELECT bill_success_score FROM leadership WHERE senator_id = ' + str(s_id) + ' AND congress = ' + congress)
+        score = r.fetchall()
+        print(score)
+        try: 
+            score = score[0][0]
+        rep_dict[s_id]['leadership_score'] = score
 
 def graph_nodes(rep_dict):
     '''
@@ -82,13 +90,13 @@ def graph_nodes(rep_dict):
 
     for rep in rep_dict:
         name = rep_dict[rep]['name']
-        cosponsors = rep_dict[rep]['total_cosponsors']
+        leadership_score = rep_dict[rep]['leadership_score']
         if rep_dict[rep]['party'] == 'Republican':
-            graph.add_nodes_from([rep], party = 'r', label = name, size = cosponsors)
+            graph.add_nodes_from([rep], party = 'r', label = name, size = leadership_score)
         elif rep_dict[rep]['party'] == 'Democrat':
-            graph.add_nodes_from([rep], party = 'd', label = name, size = cosponsors)    
+            graph.add_nodes_from([rep], party = 'd', label = name, size = leadership_score)    
         else: 
-            graph.add_nodes_from([rep], party = 'o', label = name, size = cosponsors)        
+            graph.add_nodes_from([rep], party = 'o', label = name, size = leadership_score)        
     pos = nx.random_layout(graph)
     
     return graph,pos
@@ -112,14 +120,8 @@ def graph_edges(rep_dict, graph, pos):
                         print(cosponsor)
                     checked_list.append((rep, cosponsor))
                     all_actions.append(num_sponsorships)
-                    if num_sponsorships >= 10: # we should go back and check this threshold again
+                    if num_sponsorships >= 10:
                         graph.add_edge(cosponsor, rep, weight = num_sponsorships)
-    
-    #Finds Average num actions between senators
-    actions = 0
-    for item in all_actions:
-        actions += item
-    average = actions / len(all_actions)
 
 def write_json(graph, congress):
     '''
@@ -129,9 +131,9 @@ def write_json(graph, congress):
     json.dump(d, open('gov_data/static/gov_data/'+ str(congress) + '_force.json','w'))
 
 if __name__ == '__main__':
-    c, db = open_db('GovData')
-    start = 110
-    for congress in range(start, 111):
+    c, db = open_db('GovData1')
+    start = 95
+    for congress in range(start, 115):
         congress = str(congress)
         rep_dict = fill_rep_dict(c, congress)
         graph,pos = graph_nodes(rep_dict)
