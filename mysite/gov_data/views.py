@@ -42,5 +42,10 @@ def senator_detail(request, senator_id):
     bill_list = Bill.objects.filter(sponsor = senator_id)
     leadership_scores = Leadership.objects.filter(senator_id = senator_id).order_by('congress')
     print(leadership_scores)
-    context = {'senator': senator, 'bill_list': bill_list, 'leadership_scores': leadership_scores}
+    score_list = []
+    congress_list = []
+    for congress in leadership_scores:
+        score_list.append(congress.bill_success_score)
+        congress_list.append(congress.congress)
+    context = {'senator': senator, 'bill_list': bill_list, 'leadership_scores': leadership_scores, 'score_list': score_list, 'congress_list': congress_list}
     return render(request, 'gov_data/senator_detail.html', context)
