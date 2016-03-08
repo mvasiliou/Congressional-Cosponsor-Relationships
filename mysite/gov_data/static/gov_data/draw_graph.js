@@ -110,10 +110,11 @@ $(document).ready(function(){
     });
   }
   
-  add_nodes_and_edges('/static/gov_data/force.json');
+  add_nodes_and_edges('/static/gov_data/114_force.json');
 
   $("body").on("click", "#senate", (function () {
-    add_nodes_and_edges('/static/gov_data/force.json')
+    var value = $("select").find('option:selected').val();
+    add_nodes_and_edges('/static/gov_data/' + value + '_force.json')
   }));
 
   $("body").on("click", "#democrat", (function () {
