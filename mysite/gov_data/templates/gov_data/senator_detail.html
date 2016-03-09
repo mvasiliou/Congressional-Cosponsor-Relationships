@@ -1,3 +1,5 @@
+<!-- STOP HITTING CNTRL Z -->
+
 <!DOCTYPE HTML>
 <html>
 <html lang="en">
@@ -10,6 +12,8 @@
         <link rel="stylesheet" type="text/css" href="{% static 'gov_data/senator_detail_style.css' %}" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
         <script src="http://mbostock.github.com/d3/d3.v2.js"></script>
+        <script src="plotly-latest.min.js"></script> 
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     </head>
     <body>
         <nav class="navbar navbar-dark bg-inverse">
@@ -18,6 +22,7 @@
             <a class='btn btn-primary nav-item nav-link' role='button' href='{% url "gov_data:senators_index" %}'>Senators</a>
         </nav>
         <div class = 'container'>
+
             <div class='row row-margin'>
                 <h1>Sen. {{senator.first}} {{senator.last}} </h1>
                 <h3> {{senator.party}} from the State of {{senator.state}}</h3>
@@ -45,13 +50,27 @@
             <script type="text/javascript"> 
             function toggle_visibility(id) {
                var e = document.getElementById(id);
-               if(e.style.display == 'block')
+               if(e.style.display == 'inline')
                   e.style.display = 'none';
                else
-                  e.style.display = 'block';
+                  e.style.display = 'inline';
             }
             </script>
-            <button type="button" id="graph_hider" class="btn btn-success" onclick="toggle_visibility('graph');">Click Here for Graph!</button>
+
+
+            <button type="button" id="graph_hider2" class="btn btn-success get_inline" onclick="toggle_visibility('tester');">Smooth Graph</button>
+            <button type="button" id="graph_hider" class="btn btn-success get_inline" onclick="toggle_visibility('graph');">Rough Graph</button>
+
+            <!-- help from here: https://plot.ly/javascript/getting-started/ -->
+            <div id="tester" style="width:800px;height:600px;"></div>
+                <script type='text/javascript'>
+                    TESTER = document.getElementById('tester');
+                    Plotly.plot( TESTER, [{
+                    x: {{congress_list}},
+                    y: {{score_list}} }], {
+                    autosize: true} );
+                </script>
+            
 
             <div id="graph" class="aGraph row">
                 <h3 id="graph_title">Leadership Score by Congress<h3>
@@ -125,6 +144,8 @@
 
                 graph.append("svg:path").attr("d", line(data));
             </script>
+
+
             <div class='row row-margin'>
                 <h2>Bills Introduced</h2>
                 {% if bill_list %}

@@ -58,22 +58,34 @@ div h3 {
 	font-size: 3em;
 	/*color: red;*/
 }
-
+/*
 #graph_hider {
 	margin-left: 45%;
 	margin-top: 5%;
-	/*color: red;*/
-}
+
+}*/
 
 #graph {
-	display: none;
-	margin-bottom: -40%; /* I'm sorry I know this is a bad way to do it/probably painful to look at but it works*/
+	display: none; /*default display; gets toggled in script*/
 }
 
 #graph_title {
 	margin-top: 5%;
 	margin-bottom: -10%;
 	text-align: center;
+}
+
+#tester {
+	display: none;
+	width: 00%;
+	height: 100%;
+}
+
+.get_inline{
+	display: inline-block;
+	/*margin-left: 45%;*/
+	margin-top: 5%;
+
 }
 
 
