@@ -70,7 +70,10 @@
                     Plotly.plot( TESTER, [{
                     x: {{congress_list}},
                     y: {{score_list}} }], {
-                    autosize: true} );
+                    autosize: false,
+                    title: 'Leadership Score by Congress',
+                    yaxis: {title: 'Leadership Score'},
+                    xaxis: {title: 'Congress'} });
                 </script>
             
 
