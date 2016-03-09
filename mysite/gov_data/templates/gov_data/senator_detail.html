@@ -21,22 +21,50 @@
             <div class='row row-margin'>
                 <h1>Sen. {{senator.first}} {{senator.last}} </h1>
                 <h3> {{senator.party}} from the State of {{senator.state}}</h3>
+                <table id='lead_table'>
+                    <tr id='lead_table_title'>
+                        <td class='lead_table_column'>Congress</td>
+                        <td class='lead_table_column'>Success Score</td>
+                        <td class='lead_table_column'>Cosponsors Gathered</td>
+                        <td class='lead_table_column'>Bills Cosponsored</td>
+                    </tr>
                 {% if leadership_scores %}
                 {% for score in leadership_scores %}
-                    <p>Congress: {{score.congress}} Score: {{score.bill_success_score}} {{score.cosponsors_in}} {{score.cosponsors_out}}</p>
+                    <tr class='lead_table_row'>
+                        <td class='lead_table_column'>{{score.congress}}</td>
+                        <td class='lead_table_column'>{{score.bill_success_score}}</td>
+                        <td class='lead_table_column'>{{score.cosponsors_in}}</td>
+                        <td class='lead_table_column'>{{score.cosponsors_out}}</td>
+                    </tr>
                 {% endfor %}
                 {% endif %}
+                    <!-- <p>Congress: {{score.congress}} Score: {{score.bill_success_score}} {{score.cosponsors_in}} {{score.cosponsors_out}}</p> -->
+                </table>
             </div>
+            <!--function below http://blog.movalog.com/a/javascript-toggle-visibility/ -->
+            <script type="text/javascript"> 
+            function toggle_visibility(id) {
+               var e = document.getElementById(id);
+               if(e.style.display == 'block')
+                  e.style.display = 'none';
+               else
+                  e.style.display = 'block';
+            }
+            </script>
+            <button type="button" id="graph_hider" class="btn btn-success" onclick="toggle_visibility('graph');">Click Here for Graph!</button>
 
-            <div id="graph" class="aGraph row" style="float: top"></div>
+            <div id="graph" class="aGraph row">
+                <h3 id="graph_title">Leadership Score by Congress<h3>
+            </div>
             <script>
             /* implementation influenced by http://bl.ocks.org/benjchristensen/2579599 */
             
             // define dimensions of graph; pretty much arbitrary/style decision
             var m = [100, 100, 100, 100]; 
-            var w = 800 - m[1] - m[3]; 
-            var h = 600 - m[0] - m[2]; 
-        
+            // var w = 800 - m[1] - m[3]; 
+            // var h = 600 - m[0] - m[2]; 
+            var w = 800
+            var h = 600
             // data and x_axis_labels arrays (lists)
             var data = {{score_list}};
             var x_axis_labels = {{congress_list}}
@@ -88,12 +116,12 @@
                     .style("text-anchor", "middle")
                     .text("Leadership Score");
 
-                graph.append('text')
-                    // .attr("class", "title")
-                    .attr("x", w / 2 )
-                    .attr("y", -10 )
-                    .style("text-anchor", "middle")
-                    .text("Leadership Score by Congress")
+                // graph.append('text')
+                //     // .attr("class", "title")
+                //     .attr("x", w / 2 )
+                //     .attr("y", -10 )
+                //     .style("text-anchor", "middle")
+                //     .text("Leadership Score by Congress")
 
                 graph.append("svg:path").attr("d", line(data));
             </script>
