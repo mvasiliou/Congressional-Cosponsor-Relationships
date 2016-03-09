@@ -119,12 +119,12 @@ $(document).ready(function(){
 
   $("body").on("click", "#democrat", (function () {
     var value = $("select").find('option:selected').val(); 
-    add_nodes_and_edges('/static/gov_data/' + value + '_democrat_force.json')
+    add_nodes_and_edges('/static/gov_data/' + value + '_dem_force.json')
   }));  
 
   $("body").on("click", "#republican", (function () {
     var value = $("select").find('option:selected').val();
-    add_nodes_and_edges("/static/gov_data/" + value + "_republican_force.json")
+    add_nodes_and_edges("/static/gov_data/" + value + "_rep_force.json")
   }));
 
   $('select').on('change', function() {
