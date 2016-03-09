@@ -28,7 +28,7 @@ def get_rep_codes(c, rep_dict, congress):
     r = c.execute('SELECT id, first, last, party FROM SENATORS WHERE start <=' + congress + ' AND end >=' + congress)
     senators = r.fetchall()
     for rep in senators:
-        print(rep)
+        # print(rep)
         s_id = rep[0]
         first = rep[1]
         last = rep[2]
@@ -48,7 +48,7 @@ def get_rep_bills(c, rep_dict, congress):
         r = c.execute('SELECT bill_id FROM bills WHERE sponsor_id = ' + str(s_id) + ' AND congress = ' + congress)
         bills = r.fetchall()
         for bill in bills:
-            print(bill)
+            # print(bill)
             bill_id = bill[0]
             rep_dict[s_id]['bills'].append(bill_id)
 
@@ -65,7 +65,7 @@ def get_rep_relationships(rep_dict):
             r = c.execute('SELECT cosponsor_id FROM cosponsorships WHERE bill = ' + str(bill_id))
             cosponsors = r.fetchall()
             for rep in cosponsors:
-                print(rep)
+                # print(rep)
                 rep_id = rep[0]
                 if rep_id not in rep_dict[s_id]['relationships']:
                     rep_dict[s_id]['relationships'][rep_id] = 0
@@ -75,7 +75,7 @@ def get_leadership_scores(c, rep_dict, congress):
     for s_id in rep_dict:
         r = c.execute('SELECT bill_success_score FROM leadership WHERE senator_id = ' + str(s_id) + ' AND congress = ' + congress)
         score = r.fetchall()
-        print(score)
+        # print(score)
         try: 
             score = score[0][0]
         except:
@@ -118,8 +118,8 @@ def graph_edges(rep_dict, graph, pos):
                     if cosponsor in rep_dict:
                         if rep in rep_dict[cosponsor]['relationships']:
                             num_sponsorships += rep_dict[cosponsor]['relationships'][rep]
-                    else: 
-                        print(cosponsor)
+                    # else: 
+                        # print(cosponsor)
                     checked_list.append((rep, cosponsor))
                     all_actions.append(num_sponsorships)
                     if num_sponsorships >= 10:
@@ -134,11 +134,14 @@ def write_json(graph, congress):
 
 if __name__ == '__main__':
     c, db = open_db('GovData1')
-    start = 105
-    for congress in range(start, 110):
+    start = 100
+    for congress in range(start, 103):
+        print("congress {} running".format(congress))
+>>>>>>> 771acea2f8cf95b84235c98a822fc2f55c98e169
         congress = str(congress)
         rep_dict = fill_rep_dict(c, congress)
         graph,pos = graph_nodes(rep_dict)
         graph_edges(rep_dict, graph, pos)   
         write_json(graph, congress)
+        print("congress {} done".format(congress))
     commit_db(db)

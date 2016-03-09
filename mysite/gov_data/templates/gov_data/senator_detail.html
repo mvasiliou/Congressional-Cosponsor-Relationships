@@ -52,12 +52,16 @@
                 .x(function(d,i) { return x(x_axis_labels[i]); })
                 .y(function(d) { return y(d); })
 
+
                 // Add an SVG element with the desired dimensions and margin.
                 var graph = d3.select("#graph").append("svg:svg")
-                      .attr("width", w + m[1] + m[3])
-                      .attr("height", h + m[0] + m[2])
+                    .attr("width", window.innerWidth)
+                    .attr("height", window.innerHeight)                      
+
+                      // .attr("width", w + m[1] + m[3])
+                      // .attr("height", h + m[0] + m[2])
                     // .append("svg:g") Is this a necessary line? 
-                      .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
+                    .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
                 // makes the x-axis
                 var xAxis = d3.svg.axis().scale(x).ticks(x_axis_labels.length);
