@@ -110,24 +110,24 @@ $(document).ready(function(){
     });
   }
   
-  add_nodes_and_edges('/static/gov_data/114_force.json');
+  add_nodes_and_edges('/static/gov_data/force_json/114_force.json');
 
   $("body").on("click", "#senate", (function () {
     var value = $("select").find('option:selected').val();
-    add_nodes_and_edges('/static/gov_data/' + value + '_force.json')
+    add_nodes_and_edges('/static/gov_data/force_json/' + value + '_force.json')
   }));
 
   $("body").on("click", "#democrat", (function () {
     var value = $("select").find('option:selected').val(); 
-    add_nodes_and_edges('/static/gov_data/' + value + '_dem_force.json')
+    add_nodes_and_edges('/static/gov_data/party_json/' + value + '_dem_force.json')
   }));  
 
   $("body").on("click", "#republican", (function () {
     var value = $("select").find('option:selected').val();
-    add_nodes_and_edges("/static/gov_data/" + value + "_rep_force.json")
+    add_nodes_and_edges("/static/gov_data/party_json/" + value + "_rep_force.json")
   }));
 
   $('select').on('change', function() {
-      add_nodes_and_edges('/static/gov_data/' + this.value + '_force.json')
+      add_nodes_and_edges('/static/gov_data/force_json/' + this.value + '_force.json')
   });
 });

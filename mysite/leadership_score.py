@@ -62,7 +62,7 @@ def get_cosponsor_points(c):
     r = c.execute('SELECT id FROM senators')
     senators = r.fetchall()
     print(len(senators))
-    for senator in senators[5:100]:
+    for senator in senators[100:120]:
         print('New Person!')
         s_id = senator[0]    
         cosponsors_out_dict[s_id] = {}

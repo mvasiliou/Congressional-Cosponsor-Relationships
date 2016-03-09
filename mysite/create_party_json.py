@@ -43,7 +43,7 @@ def create_party_graph(congress):
     json.dump(republican_data, open('gov_data/static/gov_data/'+ str(congress) + '_rep_force.json','w'))
     json.dump(democrat_data, open('gov_data/static/gov_data/'+ str(congress) + '_dem_force.json','w'))
 
-for congress in range(90, 115):
+for congress in range(105, 108):
     create_party_graph(congress)
     print(congress)
 

@@ -23,7 +23,7 @@
                     <h1>Senators List</h1>
                 </div>
             </div>
-            {% if senator_list %}
+                <form class = 'form-inline'>
                 <select class = 'form-control'>
                     <option value="114">2014 - 2016 (114th)</option>
                     <option value="113">2012 - 2014 (113th)</option>
@@ -52,6 +52,16 @@
                     <option value="91">1966 - 1968 91</option> 
                     <option value="90">1964 - 1966 90</option>
                 </select>
+                <button type='button' class='btn btn-primary' id='go'>Go!</button>
+                <script>
+                    $("body").on("click", "#go", (function () {
+                      var congress = $("select").find('option:selected').val();
+                      var url = '/gov_data/senators/congress/' + congress + '/'
+                      window.location = url;
+                    }));
+                </script>
+                </form>
+            {% if senator_list %}
                 <table class = 'table table-bordered'>
                         <thead class = 'thead-inverse'>
                             <tr>

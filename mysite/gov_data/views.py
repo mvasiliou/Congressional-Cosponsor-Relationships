@@ -34,8 +34,8 @@ def bill_detail(request, bill_id):
     context = {'bill': bill, 'sponsor': sponsor, 'cosponsor_list': cosponsor_list}
     return render(request, 'gov_data/bill_detail.html', context)
 
-def senators_index(request):
-    senator_list = Senator.objects.order_by('last')
+def senators_index(request, congress = 114):
+    senator_list = Senator.objects.filter(start__lte = congress, end__gte = congress).order_by('last')
     template = loader.get_template('gov_data/senators_index.html')
     context = {'senator_list': senator_list, }
     return HttpResponse(template.render(context, request))
@@ -44,7 +44,6 @@ def senator_detail(request, senator_id):
     senator = Senator.objects.get(pk = senator_id)
     bill_list = Bill.objects.filter(sponsor = senator_id)
     leadership_scores = Leadership.objects.filter(senator_id = senator_id).order_by('congress')
-    print(leadership_scores)
     score_list = []
     congress_list = []
     for congress in leadership_scores:

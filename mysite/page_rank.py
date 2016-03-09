@@ -32,9 +32,6 @@ def test():
 	v = np.ones((10,1))/10
 	x = np.ones((10))
 
-
-
-
 def transitions(sponsorship):
 	out_degrees = []
 	for i in sponsorship:
