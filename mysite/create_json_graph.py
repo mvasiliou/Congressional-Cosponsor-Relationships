@@ -134,15 +134,10 @@ def write_json(graph, congress):
 
 if __name__ == '__main__':
     c, db = open_db('GovData1')
-<<<<<<< HEAD
-    start = 110
-    for congress in range(start, 115):
-=======
     start = 100
     for congress in range(start, 103):
         print("congress {} running".format(congress))
->>>>>>> 771acea2f8cf95b84235c98a822fc2f55c98e169
->>>>>>> e81301e8708480d8a92e84666fd9934ee18d751a
+
         congress = str(congress)
         rep_dict = fill_rep_dict(c, congress)
         graph,pos = graph_nodes(rep_dict)
