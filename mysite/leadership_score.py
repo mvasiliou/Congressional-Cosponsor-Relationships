@@ -53,7 +53,6 @@ def find_leadership_scores(c):
         if bill_sponsor_id not in leadership_dict[congress]:
             leadership_dict[congress][bill_sponsor_id] = 0
         leadership_dict[congress][bill_sponsor_id] += points
-    pprint(leadership_dict)
     return leadership_dict
 
 def get_cosponsor_points(c):
@@ -62,8 +61,7 @@ def get_cosponsor_points(c):
     r = c.execute('SELECT id FROM senators')
     senators = r.fetchall()
     print(len(senators))
-    for senator in senators[140:150]:
-        print('New Person!')
+    for senator in senators[160:165]:
         s_id = senator[0]    
         cosponsors_out_dict[s_id] = {}
         cosponsors_in_dict[s_id] = {}
@@ -89,7 +87,7 @@ def get_cosponsor_points(c):
                 cosponsors_in_dict[s_id][congress] = 0
             cosponsors_in_dict[s_id][congress] += count
     return cosponsors_out_dict, cosponsors_in_dict
-
+    
 def update_database_with_leadership_scores(c, leadership_dict):
     key = 0
     for congress in leadership_dict:
@@ -104,11 +102,11 @@ def update_database_with_cosponsors(c, cosponsors_out_dict, cosponsors_in_dict):
         for congress in cosponsors_out_dict[person]:
             cosponsors_out = cosponsors_out_dict[person][congress]
             c.execute('UPDATE leadership SET cosponsors_out = ' + str(cosponsors_out) + ' WHERE senator_id = ' + str(person) + ' AND congress = ' + str(congress))
+
     for person in cosponsors_in_dict:
         for congress in cosponsors_in_dict[person]:
             cosponsors_in = cosponsors_in_dict[person][congress]
             c.execute('UPDATE leadership SET cosponsors_in = ' + str(cosponsors_in) + ' WHERE senator_id = ' + str(person) + ' AND congress = ' + str(congress))
-            print(person, congress)
 
 if __name__ == '__main__':
     c, db = open_db('GovData')

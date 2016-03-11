@@ -1,4 +1,3 @@
 To Do:
 
-Add Select Option w/ Javascript for Congress on Index Pages
-Create Graphs for Leadership Scores (5 - 524)
+Done!

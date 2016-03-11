@@ -21,7 +21,6 @@ def add_rep_to_db(c):
         except:
             r = c.execute('SELECT start, end FROM senators WHERE id =' + str(s_id))
             date_list = r.fetchall()
-            print(date_list)
             current_start = date_list[0][0]
             current_end = date_list[0][1]
             if start < int(current_start):
@@ -38,7 +37,6 @@ def add_sponsored_bills(c):
         data = make_url_request(url)
         for bill in data['objects']:
             bill_id = bill['id']
-            print('Bill Num:', bill_id)
             title = bill['title']
             status = bill['current_status']
             introduced_date = bill['introduced_date']
@@ -46,14 +44,6 @@ def add_sponsored_bills(c):
             congress = bill['congress']
             db_args = (bill_id, title, status, introduced_date, sponsor_id, congress)
             c.execute('INSERT INTO bills VALUES(?,?,?,?,?,?)', db_args)
-
-def update_bill_with_status(c):
-    r = c.execute('SELECT id FROM bills')
-    bills = r.fetchall()
-    for bill in bills:
-        bill_id = bill[0]
-        url = 'https://www.govtrack.us/api/v2/vote?related_bill__exact=' + bill_id
-        data = make_url_request(url)
         
 def add_cosponsorships(c):
     r = c.execute('SELECT bill_id FROM bills')
