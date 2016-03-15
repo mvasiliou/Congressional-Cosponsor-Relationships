@@ -1,12 +1,6 @@
-# This is an auto-generated Django model module.
-# You'll have to do the following manually to clean this up:
-#   * Rearrange models' order
-#   * Make sure each model has one field with primary_key=True
-#   *` lines if you wish to allow Django to create, modify, and delete the table
-# Feel free to rename the models, but don't rename db_table values or field names.
-#
-# Also note: You'll have to insert the output of 'django-admin sqlcustom [app_label]'
-# into your database.
+#This file is not actually called upon by Django, it uses the models.py file in "gov_data". 
+#This was the original auto-generated file from our database
+
 from __future__ import unicode_literals
 
 from django.db import models
@@ -25,7 +19,6 @@ class Bills(models.Model):
     class Meta:
         db_table = 'bills'
 
-
 class Cosponsorships(models.Model):
     action_id = models.IntegerField(primary_key=True, blank=True, null=False)
     bill = models.IntegerField(blank=True, null=True)
@@ -34,7 +27,6 @@ class Cosponsorships(models.Model):
 
     class Meta:
         db_table = 'cosponsorships'
-
 
 class Senators(models.Model):
     id = models.IntegerField(primary_key=True, blank=True, null=False)  # AutoField?

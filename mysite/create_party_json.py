@@ -11,7 +11,7 @@ def get_force_graph(congress):
 
     Output: three graphs, one for each the total senate, republican and democratic parties
     '''
-    file_name = 'gov_data/static/gov_data/'+str(congress)+'_force.json'
+    file_name = 'gov_data/static/gov_data/force_json/'+str(congress)+'_force.json'
     json_data=open(file_name).read()
     data = json.loads(json_data)
     graph = json_graph.node_link_graph(data)

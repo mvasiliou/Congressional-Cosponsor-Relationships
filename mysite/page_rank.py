@@ -1,7 +1,5 @@
 # This was where we tried to do page rank and failed.  Code largely is broken; we include it to show some of the efforts we made
 
-
-
 import numpy as np
 import random
 '''
