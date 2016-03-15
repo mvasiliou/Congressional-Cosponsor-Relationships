@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import Bill, Cosponsorship, Senator
-# Register your models here.
-
+#Follows the Django Tutorial Online, does not really pertain to our project.
 
 class CosponsorhsipInLine(admin.TabularInline):
     model = Cosponsorship

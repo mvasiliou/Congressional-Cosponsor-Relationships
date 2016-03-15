@@ -1,3 +1,5 @@
+//Influence taken from blog posts by Mike Bostock at https://bl.ocks.org/mbostock/4062045
+
 $(document).ready(function(){
 
   var width = 1140,
