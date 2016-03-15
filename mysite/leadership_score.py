@@ -37,6 +37,9 @@ points_dict = {'enacted_veto_override': intro + vote_bonus + senate_maj + vote_b
     'fail_originating_house': 0}
 
 def find_leadership_scores(c):
+    '''
+    Uses the points dictionary above to calculate the leadership scores for congressmen
+    '''
     leadership_dict = {}
     r = c.execute('SELECT bill_id, status, sponsor_id, congress FROM bills')
     bills = r.fetchall()
@@ -56,6 +59,15 @@ def find_leadership_scores(c):
     return leadership_dict
 
 def get_cosponsor_points(c):
+    '''
+    grabs and counts the cosponsorships for each congressman
+
+    input: c, the database cursor.    
+
+    output: 
+    cosponsors_in_dict, a dictionary counting the cosponsors that a senator gathered
+    cosponsors_out_dict, a dictionary counting the bills a senator has cosponsored
+    '''
     cosponsors_out_dict = {}
     cosponsors_in_dict = {}
     r = c.execute('SELECT id FROM senators')
@@ -89,6 +101,13 @@ def get_cosponsor_points(c):
     return cosponsors_out_dict, cosponsors_in_dict
     
 def update_database_with_leadership_scores(c, leadership_dict):
+    '''
+    Updates the database with the leadership scores calculated above.
+
+    Input:
+    c, the database cursor 
+    leadership dict, the dictionary returned by find leadership scores.
+    '''
     key = 0
     for congress in leadership_dict:
         for member in leadership_dict[congress]:

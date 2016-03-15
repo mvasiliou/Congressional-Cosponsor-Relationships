@@ -3,6 +3,9 @@ import sqlite3
 from helper_functions import make_url_request, open_db, commit_db
 
 def add_rep_to_db(c):
+    '''
+    Takes a senator and adds them to the database.
+    '''
     url = "https://www.govtrack.us/api/v2/role?startdate__gt=1950-01-01&&role_type__exact=senator&&limit=6000"
     data = make_url_request(url)
     for senator in data['objects']:
@@ -29,6 +32,9 @@ def add_rep_to_db(c):
                 c.execute('UPDATE senators SET end =' + str(end) + ' WHERE id =' + str(s_id))
 
 def add_sponsored_bills(c):
+    '''
+    Adds senators' sponsored bills to the database
+    '''
     r = c.execute('SELECT id FROM senators')
     senators = r.fetchall()
     for s_id in senators:
@@ -46,6 +52,9 @@ def add_sponsored_bills(c):
             c.execute('INSERT INTO bills VALUES(?,?,?,?,?,?)', db_args)
         
 def add_cosponsorships(c):
+    '''
+    similar to above, adds data about cosponsorships to the database.
+    '''
     r = c.execute('SELECT bill_id FROM bills')
     bills = r.fetchall()
     for bill in bills:

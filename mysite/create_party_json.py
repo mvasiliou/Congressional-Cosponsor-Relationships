@@ -4,6 +4,13 @@ from networkx.readwrite import json_graph
 import networkx
 
 def get_force_graph(congress):
+    '''
+    This function gets the data that is displayed in our network visualization.
+
+    Input: congress number 
+
+    Output: three graphs, one for each the total senate, republican and democratic parties
+    '''
     file_name = 'gov_data/static/gov_data/'+str(congress)+'_force.json'
     json_data=open(file_name).read()
     data = json.loads(json_data)
@@ -14,7 +21,9 @@ def get_force_graph(congress):
     return graph, republican_graph, democrat_graph
 
 def create_party_graph(congress):
-
+    '''
+    Creates the actual datastructure that is displayed and saves it.
+    '''
     republican_list = []
     democrat_list = []
     other_list = []
