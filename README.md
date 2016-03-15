@@ -6,3 +6,9 @@ Set Up Instructions:
 
 1. Run "python manage.py migrate" in order to create the database
 2. Run "python database_setup.py" from /mysite in order to grab the data from GovTrack
+
+To view the webiste:
+
+1. Go into mysite directory
+2. run "python3 manage.py runserver"
+3. Copy/paste the address given into a browser.

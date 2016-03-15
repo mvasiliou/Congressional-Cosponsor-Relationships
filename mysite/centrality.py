@@ -9,6 +9,13 @@ from networkx.readwrite import json_graph
 import json
 
 def centrality_analysis(filename):
+    '''
+    Opens and analyzes a json file to estimate centrality.
+
+    input: json filename
+
+    ouput: dict with centrality values
+    '''
     with open(filename) as f:
         js_graph = json.load(f)
     G = json_graph.node_link_graph(js_graph)

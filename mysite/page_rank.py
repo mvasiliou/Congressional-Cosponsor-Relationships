@@ -1,3 +1,7 @@
+# This was where we tried to do page rank and failed.  Code largely is broken; we include it to show some of the efforts we made
+
+
+
 import numpy as np
 import random
 '''
@@ -41,9 +45,6 @@ def transitions(sponsorship):
 	return transition_matrix
 
 def markov_rank(transition_matrix, num_steps):
-<<<<<<< HEAD
-	return None
-=======
 	return None
 
 def make_one_move(transition_matrix, senator):
@@ -59,6 +60,3 @@ def make_one_move(transition_matrix, senator):
 
 def random_surfer(transition_matrix, num_steps):
 	return None
-
-
->>>>>>> origin/master
