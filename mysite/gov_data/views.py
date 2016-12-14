@@ -5,12 +5,14 @@ from django.template import loader
 
 #Created from scratch with aid from the Django documentation
 
+
 def index(request):
     '''
     Renders the Home Page Template
     '''
     return render(request, 'gov_data/index.html')
-    
+
+
 def bills_index(request, congress = 114, bill_range = '1'):
     '''
     Returns a list of bills by Congress and pagination for the Bill Index Template
@@ -26,7 +28,8 @@ def bills_index(request, congress = 114, bill_range = '1'):
         last = '1'
     context = {'bill_list': bill_list, 'start':start, 'end':end, 'next': next, 'last': last, 'congress': congress}
     return render(request, 'gov_data/bills_index.html', context)
-   
+
+
 def bill_detail(request, bill_id):
     '''
     Returns information about an individual bill for the Detail Template
@@ -44,6 +47,7 @@ def bill_detail(request, bill_id):
     context = {'bill': bill, 'sponsor': sponsor, 'cosponsor_list': cosponsor_list}
     return render(request, 'gov_data/bill_detail.html', context)
 
+
 def senators_index(request, congress = 114):
     '''
     Returns a list of Senators by Congress to the Senator Index page
@@ -52,6 +56,7 @@ def senators_index(request, congress = 114):
     template = loader.get_template('gov_data/senators_index.html')
     context = {'senator_list': senator_list, }
     return HttpResponse(template.render(context, request))
+
 
 def senator_detail(request, senator_id):
     '''
